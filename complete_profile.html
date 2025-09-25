@@ -1,0 +1,201 @@
+{% extends "base.html" %}{% load static %} {% block content %}
+<div id="body" class="d-flex justify-content-center align-items-center">
+  <div class="container">
+    <div class="card shadow-lg rounded-4 my-5 mx-auto">
+      <div class="card-body p-4">
+        <h2 class="text-center mb-4">Complete Your Profile</h2>
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+<!-- First Row -->
+<div class="row mb-3">
+  <div class="col-md-4">
+    <label class="form-label">Username</label>
+    <input
+      type="text"
+      class="form-control bg-light"
+      name="username"
+      value="{{ request.user.username }}"
+      readonly
+    />
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Email</label>
+    <input
+      type="email"
+      class="form-control bg-light"
+      value="{{ request.user.email }}"
+      readonly
+    />
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Role</label>
+    <input
+      type="text"
+      class="form-control bg-light"
+      value="{{ request.user.role }}"
+      readonly
+    />
+  </div>
+</div>
+
+
+<!-- Second Row -->
+<div class="row mb-3">
+  <div class="col-md-4">
+    <label class="form-label">First Name</label>
+    <input
+      name="first-name"
+      type="text"
+      class="form-control"
+      placeholder="Enter your name"
+      required
+    />
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Middle Name</label>
+    <input
+      name="middle-name"
+      type="text"
+      class="form-control"
+      placeholder="Enter your name"
+    />
+  </div>
+  <div class="col-md-4">
+    <label class="form-label">Last Name</label>
+    <input
+      name="last-name"
+      type="text"
+      class="form-control"
+      placeholder="Enter your name"
+    />
+  </div>
+</div>
+
+<!-- Third Row -->
+<div class="row mb-3">
+  <div class="col-md-4">
+    <label class="form-label">Phone Number</label>
+    <input
+      name="phone-number"
+      type="number"
+      class="form-control"
+      placeholder="Phone Number"
+      required
+    />
+  </div>
+            {% if request.user.role != "Individual Student" %}
+
+  <div class="col-md-4">
+    <label class="form-label">Organization Name</label>
+    <input
+      type="text"
+      class="form-control"
+      placeholder="Organization Name"
+      name="organization"
+      required
+    />
+  </div>
+  {% endif %}
+  <div class="col-md-4">
+    <label for="gender" class="form-label">Gender</label>
+    <select class="form-select" id="gender" name="gender" required>
+      <option selected disabled>Choose gender</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+    </select>
+  </div>
+</div>
+          {% if request.user.role != "Individual Student" %}
+          <!-- fouth row -->
+
+          <div class="d-flex flex-wrap gap-3 mb-3">
+            <div class="flex-fill uniform-input">
+              <label class="form-label">Inside Image</label>
+              <input
+                type="file"
+                required
+                class="form-control"
+                name="inside_image"
+                accept="image/*"
+              />
+            </div>
+
+            <div class="flex-fill uniform-input">
+              <label class="form-label">Outside Image</label>
+              <input
+                type="file"
+                required
+                class="form-control"
+                name="outside_image"
+                accept="image/*"
+              />
+            </div>
+          </div>
+          {% endif %}
+
+          <!-- Avatar Choose Button -->
+          <div class="text-center mb-4">
+            <button
+              type="button"
+              id="avatarBtn"
+              class="btn btn-outline-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#avatarModal"
+              style="display: none"
+            >
+              Choose Your Avatar
+            </button>
+            <!-- Hidden input to store selected avatar -->
+            <input type="hidden" name="avatar" id="selectedAvatar" required />
+            <div id="avatarPreview" class="mt-3"></div>
+          </div>
+
+          <!-- Save Button -->
+          <div class="text-center">
+            <button type="submit" class="btn" style="width: 30%; background-color: #9604d6; color: white;">
+              Save Profile
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Avatar Modal -->
+<div
+  class="modal fade"
+  id="avatarModal"
+  tabindex="-1"
+  aria-labelledby="avatarModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="avatarModalLabel">Choose Your Avatar</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <div
+          id="avatarList"
+          class="d-flex flex-wrap gap-3 justify-content-center"
+        >
+          <!-- Avatars load dynamically here -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">
+          OK
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
